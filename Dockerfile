@@ -1,5 +1,29 @@
-FROM python:3
-RUN pip install django==3.2
+FROM python:3.14-slim
+
+# Prevent .pyc files and enable unbuffered logging
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project files
 COPY . .
-RUN python manage.py migrate
-CMD ["python","manage.py","runserver","0.0.0.0:8002"]
+
+# Collect static files (safe to skip if none configured)
+RUN python manage.py collectstatic --noinput || true
+
+# Expose port
+EXPOSE 8000
+
+# Run with gunicorn
+CMD ["gunicorn", "hello_django.wsgi:application", "--bind", "0.0.0.0:8000"]

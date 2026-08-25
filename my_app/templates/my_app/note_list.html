@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Notes</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 40px 20px; }
+        .container { width: 100%; max-width: 1400px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 40px; }
+        h1 { color: white; font-size: 2.5rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
+        .add-btn { background: #ffffff; color: #764ba2; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s; }
+        .add-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .note-card { border-radius: 18px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column; justify-content: space-between; min-height: 200px; }
+        .note-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
+        .note-yellow { background: linear-gradient(135deg, #fff9c4, #ffe082); }
+        .note-blue   { background: linear-gradient(135deg, #bbdefb, #64b5f6); }
+        .note-green  { background: linear-gradient(135deg, #c8e6c9, #81c784); }
+        .note-red    { background: linear-gradient(135deg, #ffcdd2, #e57373); }
+        .note-purple { background: linear-gradient(135deg, #e1bee7, #ba68c8); }
+        .note-card h2 { font-size: 1.4rem; margin-bottom: 12px; color: #2d2d2d; word-break: break-word; }
+        .note-card p { color: #3a3a3a; line-height: 1.5; margin-bottom: 20px; word-break: break-word; flex-grow: 1; }
+        .actions { display: flex; gap: 10px; }
+        .actions a { text-decoration: none; padding: 8px 18px; border-radius: 25px; font-size: 0.9rem; font-weight: 600; transition: opacity 0.2s; }
+        .edit-btn { background: #2d2d2d; color: #fff; }
+        .delete-btn { background: rgba(255,255,255,0.85); color: #c0392b; }
+        .actions a:hover { opacity: 0.8; }
+        .empty { color: white; text-align: center; font-size: 1.3rem; margin-top: 80px; opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 My Notes</h1>
+            <a href="{% url 'create_note' %}" class="add-btn">➕ Add Note</a>
+        </div>
+        {% if notes %}
+        <div class="grid">
+            {% for note in notes %}
+            <div class="note-card note-{{ note.color }}">
+                <div>
+                    <h2>{{ note.title }}</h2>
+                    <p>{{ note.content }}</p>
+                </div>
+                <div class="actions">
+                    <a href="{% url 'update_note' note.id %}" class="edit-btn">✏️ Edit</a>
+                    <a href="{% url 'delete_note' note.id %}" class="delete-btn">🗑️ Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty">No notes yet. Click "Add Note" to create one! ✨</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Note</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .card { background: #fff; width: 100%; max-width: 480px; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.25); }
+        .icon { font-size: 3rem; margin-bottom: 15px; }
+        h1 { color: #c0392b; margin-bottom: 15px; font-size: 1.6rem; }
+        p { color: #555; margin-bottom: 25px; line-height: 1.5; }
+        .note-title { font-weight: bold; color: #333; }
+        .btn-row { display: flex; gap: 12px; }
+        button, .cancel-btn { padding: 13px 26px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; text-decoration: none; text-align: center; flex: 1; }
+        button { background: #e57373; color: #fff; }
+        button:hover { background: #c0392b; }
+        .cancel-btn { background: #eee; color: #555; }
+        .cancel-btn:hover { background: #ddd; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">🗑️</div>
+        <h1>Delete this note?</h1>
+        <p>Are you sure you want to delete <span class="note-title">"{{ note.title }}"</span>? This can't be undone.</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="btn-row">
+                <button type="submit">Yes, Delete</button>
+                <a href="{% url 'note_list' %}" class="cancel-btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
